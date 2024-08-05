@@ -161,19 +161,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 SYSTEMMEMORY=$(($(grep MemAvailable /proc/meminfo | awk '{print $2}')/1024/1024))
 
-# parameter check here
-echo "IP" $MYIP
-echo "domain" $DOMAIN
-echo "host" $HOSTONLY
-echo "hostname" $HOSTNAME
-echo "Timezone" $TIMEZONE
-echo "LE" $LETSENCRYPT
-echo "apache" $APACHE
-echo "pwd" $MYPASSWORD
-echo "memory" $SYSTEMMEMORY
-
-
-# Begin stuff
+# Begin 
 
 echo "Updating system and installing some essential packages ..."
 #What are the other essential packages?
@@ -183,8 +171,6 @@ DEBIAN_FRONTEND=noninteractive apt-get install -qq -y apt-utils< /dev/null > /de
 DEBIAN_FRONTEND=noninteractive apt-get install -qq -y netcat-openbsd sudo libpcre3 libgmp10 libexpat1 libstdc++6 libaio1 resolvconf unzip pax sysstat sqlite3< /dev/null > /dev/null
 DEBIAN_FRONTEND=noninteractive apt-get install -qq -y lsb-release net-tools netfilter-persistent dnsutils iptables sed wget rsyslog ldapscripts< /dev/null > /dev/null
 # Make sure we even need these packages with 10.1?
-
-
 
 #Make sure to enable PAM
 cat /etc/ssh/sshd_config | grep -v -i usepam > /tmp/sshd_config
@@ -197,7 +183,6 @@ echo "Enabling rsyslog ..."
 systemctl enable rsyslog
 systemctl restart rsyslog
 
-
 # Check DNS
 echo "Checking DNS ..."
 name=`host license.zimbra.com`
@@ -207,7 +192,6 @@ if [[ "$name" == *"not found"* ]]; then
 else
     echo -e "${GREEN}... Done.${NC}"
 fi
-
 
 # Reset the hosts file
 echo "Rewriting the /etc/hosts file ..."
@@ -220,12 +204,10 @@ timedatectl set-timezone $TIMEZONE >/dev/null 2>&1
 echo -e "${GREEN}... Done.${NC}"
 apt-get -qq update < /dev/null > /dev/null
 
-
 # Can add nfs packages / mounts here and pickup custom zmprov config files if needed for VM configuration
 # apt install nfs-common -y
-# echo "192.168.0.15:/mnt/raid/shared    /mnt/nas    nfs          rw            0    0" >> /etc/fstab
+# echo "192.168.x.x:/mnt/raid/shared    /mnt/nas    nfs          rw            0    0" >> /etc/fstab
 # mount -a
-
 
 # ============== Letsencrypt/cloudflare stuff ==================
 # export CF_ values before running script
@@ -233,10 +215,8 @@ apt-get -qq update < /dev/null > /dev/null
 if [ "$LETSENCRYPT" != "${LETSENCRYPT#[Yy]}" ] ;then # this grammar (the #[] operator) means that the variable $answer where any Y or y in 1st position will be dropped if they exist.
       echo "Installing certbot w/ cloudflare plugin and configure API"
 
-      #// install certbot, cloudflare stuff here //
       apt install certbot python3-certbot-dns-cloudflare -y
-      # ln -s /opt/certbot/bin/certbot /usr/local/sbin/certbot
-
+      
       mkdir -p ~/.secrets/certbot
       cat >>  ~/.secrets/certbot/cloudflare.ini << EOF
 dns_cloudflare_email = $CF_EMAIL
@@ -288,7 +268,6 @@ EOF
 
 fi
 
-
 # Preparing the config files to inject
 if [ ! -d "/tmp/zcs" ]; then
     mkdir /tmp/zcs
@@ -296,11 +275,8 @@ else
     rm -rf /tmp/zcs/*    #Dangerous Command
 fi
 
-
 # Download binaries
 echo "Downloading Zimbra 10.1 beta for $UVER ..."
-# wget -P /tmp/ https://files.zimbra.com/downloads/10.1.0_GA/zcs-NETWORK-10.1.0_GA_4633.UBUNTU20_64.20240610085557.tgz > /dev/null 2>&1
-
 wget -P /tmp/ https://packages.zcsplus.com/dlz/zcs-PLUS-10.1.0_BETA_4634.UBUNTU22_64.20240610092518.tgz > /dev/nuff 2>&1
 
 echo "Extracting the files ..."
@@ -416,8 +392,6 @@ zimbra_require_interprocess_security="1"
 zimbra_server_hostname="$HOSTNAME"
 EOF
 
-# INSTALL_PACKAGES="zimbra-core zimbra-ldap zimbra-logger zimbra-mta zimbra-snmp zimbra-store zimbra-apache zimbra-spell zimbra-memcached zimbra-proxy zimbra-onlyoffice "
-
 if [[ "$APACHE" == "y" ]]; then
     echo 'INSTALL_PACKAGES="zimbra-core zimbra-ldap zimbra-logger zimbra-mta zimbra-snmp zimbra-store zimbra-apache zimbra-spell zimbra-memcached zimbra-proxy"' >>/tmp/zcs/zconfig
 else
@@ -455,7 +429,6 @@ echo "Installing the Zimbra binaries ..."
 echo -e "For more details you can open a new terminal and run ${GREEN}tail -f /tmp/install.log.*${NC}"
 cd /tmp/zcs/zcs-* && ./install.sh -s < /tmp/zcs/zkeys >> /tmp/zcs/install-$D.log 2>&1
 echo -e "${GREEN}... Done.${NC}"
-
 
 echo
 read -p "Press enter to continue ... "
