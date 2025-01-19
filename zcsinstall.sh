@@ -276,11 +276,14 @@ else
 fi
 
 # Download binaries
-echo "Downloading Zimbra 10.1 beta for $UVER ..."
-wget -P /tmp/ https://packages.zcsplus.com/dlz/zcs-PLUS-10.1.0_BETA_4634.UBUNTU22_64.20240610092518.tgz > /dev/nuff 2>&1
+echo "Downloading Zimbra 10.1 GA for $UVER ..."
+# wget -P /tmp/ https://packages.zcsplus.com/dlz/zcs-PLUS-10.1.0_BETA_4634.UBUNTU22_64.20240610092518.tgz > /dev/nuff 2>&1
+
+# 10.1 GA Release
+wget -P https://packages.zcsplus.com/dlz/zcs-PLUS-10.1.0_GA_4655.UBUNTU22_64.20240819064312.tgz > /dev/null 2>&1
 
 echo "Extracting the files ..."
-cd /tmp/zcs && tar xzf /tmp/zcs-PLUS-10.1.0_BETA_4634.UBUNTU22_64.20240610092518.tgz
+cd /tmp/zcs && tar xzf /tmp/zcs-PLUS-10.1.0_GA_4655.UBUNTU22_64.20240819064312.tgz
 
 echo "Creating the auto-install input files ..."
 > /tmp/zcs/zconfig
