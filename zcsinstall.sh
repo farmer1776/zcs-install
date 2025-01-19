@@ -1,5 +1,5 @@
 #!/bin/bash
-# Installer for ZCS 10.1 Beta (install.sh wrapper script)
+# Installer for ZCS 10.1 GA (install.sh wrapper script)
 # Note: If using cloudflare DNS plugin for Letsencrypt on a production cloudflare controlled domain:
 # export CF_EMAIL=<cloudflare account email>
 # export CF_KEY=<your_cloudflare_apikey>
