@@ -250,7 +250,7 @@ rm -f "/etc/letsencrypt/live/$(hostname --fqdn)/chainZimbra.pem"
 EOF
       chmod +rx /usr/local/sbin/letsencrypt-zimbra
 
-/usr/local/sbin/letsencrypt-zimbra
+# /usr/local/sbin/letsencrypt-zimbra
 
 # certbot command here to pull initial certificate and prestage in /etc/letsencrypt/live/$HOSTNAME
 # /usr/bin/certbot certonly \
@@ -278,7 +278,7 @@ echo "Downloading Zimbra 10.1 GA for $UVER ..."
 # wget -P /tmp/ https://packages.zcsplus.com/dlz/zcs-PLUS-10.1.0_BETA_4634.UBUNTU22_64.20240610092518.tgz > /dev/nuff 2>&1
 
 # 10.1 GA Release
-wget -P https://packages.zcsplus.com/dlz/zcs-PLUS-10.1.0_GA_4655.UBUNTU22_64.20240819064312.tgz > /dev/null 2>&1
+wget -P /tmp/ https://packages.zcsplus.com/dlz/zcs-PLUS-10.1.0_GA_4655.UBUNTU22_64.20240819064312.tgz > /dev/null 2>&1
 
 echo "Extracting the files ..."
 cd /tmp/zcs && tar xzf /tmp/zcs-PLUS-10.1.0_GA_4655.UBUNTU22_64.20240819064312.tgz
