@@ -1,8 +1,7 @@
 #!/bin/bash
 # Installer for ZCS 10.1 GA (install.sh wrapper script)
 # Note: If using cloudflare DNS plugin for Letsencrypt on a production cloudflare controlled domain:
-# export CF_EMAIL=<cloudflare account email>
-# export CF_KEY=<your_cloudflare_apikey>
+# export CF_TOKEN=<cloudflare api token>
 # For Ubuntu 22.04 LTS
 UVER=$(lsb_release -d)
 if (echo $UVER) | grep -q "Ubuntu 22.04"; then
@@ -219,8 +218,7 @@ if [ "$LETSENCRYPT" != "${LETSENCRYPT#[Yy]}" ] ;then # this grammar (the #[] ope
       
       mkdir -p ~/.secrets/certbot
       cat >>  ~/.secrets/certbot/cloudflare.ini << EOF
-dns_cloudflare_email = $CF_EMAIL
-dns_cloudflare_api_key = $CF_KEY
+dns_cloudflare_api_token = $CF_TOKEN
 EOF
 
 chmod 600 ~/.secrets/certbot/cloudflare.ini
